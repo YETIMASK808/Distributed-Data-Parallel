@@ -1,11 +1,15 @@
 # Distributed-Data-Parallel
 
 # DDP流程
-
 1. 初始化进程组
 2. torch.cuda.set_device
 3. 初始化采样器
 4. 初始化ddp模型
+
+
+# 数据集说明
+1. 选用huggingface上的multilingual-sentiments，筛选出中文数据，测试集12w条
+
 
 # 注意事项
 1. model = DDP(model, device_ids=[local_rank])  # 里面的local_rank要整数类型
