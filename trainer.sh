@@ -39,8 +39,8 @@ else
         --warmup_steps=${warmup_steps} \
         --gradient_checkpointing > ${SAVE_PATH}/out.log 2>&1 &
 
-        cp ${MODEL_PATH}/token* > ${SAVE_PATH}
-        cp ${MODEL_PATH}/vocab.json > ${SAVE_PATH}
-        cp ${MODEL_PATH}/generation_config.json > ${SAVE_PATH}
-        cp ${MODEL_PATH}/merges.txt > ${SAVE_PATH}
+        cp ${MODEL_PATH}/token*  ${SAVE_PATH}
+        cp ${MODEL_PATH}/vocab.json  ${SAVE_PATH}
+        cp ${MODEL_PATH}/generation_config.json  ${SAVE_PATH}
+        cp ${MODEL_PATH}/merges.txt  ${SAVE_PATH}
 fi
