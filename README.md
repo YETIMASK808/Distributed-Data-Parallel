@@ -8,7 +8,7 @@
 
 
 # 数据集说明
-1. 选用huggingface上的multilingual-sentiments，筛选出中文数据，测试集12w条
+1. 选用huggingface上的multilingual-sentiments，筛选出中文数据，训练集12w条
 
 
 # 注意事项
