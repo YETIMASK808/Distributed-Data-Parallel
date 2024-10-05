@@ -1,0 +1,1 @@
+ms_v1 = "##system\nYou are a helpful assistant.\n##user\n你是一个情感分类专家，接下来我会给你一段话，你只需要帮我把这段话的情感分成以下三类：积极，消极，中立。只能输出一个分类，不能输入其他东西。\n###输入句子:\n{input}\n##assistant:\n{answer}"
