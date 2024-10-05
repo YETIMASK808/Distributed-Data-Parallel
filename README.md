@@ -7,8 +7,9 @@
 4. 初始化ddp模型
 
 
-# 数据集说明
-1. 选用huggingface上的multilingual-sentiments数据集，筛选出中文数据，训练集共12w条
+# 模型&数据集
+1. 模型选用gpt-2(124M)
+2. 选用huggingface上的multilingual-sentiments数据集，筛选出中文数据，训练集共12w条
 
 
 # 注意事项
