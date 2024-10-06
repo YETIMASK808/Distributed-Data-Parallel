@@ -20,9 +20,9 @@ IFS="," read -ra cuid <<< ${cuids}
 cuids_num=${#cuid[@]}
 
 if [ -d ${SAVE_PATH} ]; then
-    echo 文件夹已存在，跳过训练
+    echo ${SAVE_PATH} have already existed, skip training
 else
-    echo 文件夹不存在，开始训练
+    echo start training...
     mkdir -p ${SAVE_PATH}
     CUDA_VISIBLE_DEVICES=${cuids} nohup torchrun --nproc-per-node=${cuids_num} trainer.py \
         --model_name_or_path=${MODEL_PATH} \

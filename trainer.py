@@ -52,6 +52,7 @@ def _filter(example):
     if example['language'] == 'chinese':
         return example
 
+# convert to chinese label
 def convert(label):
     if label == 0:
         zh_label='积极'
@@ -93,10 +94,10 @@ def process_func(example):
 if __name__ == '__main__':
     args = parse()
 
-    # 初始化进程组
+    # initial process group
     dist.init_process_group('nccl', init_method="env://")
     
-    # 设置cuda,记得local_rank要整数类型
+    # set rank 
     rank = dist.get_rank()
     local_rank = int(os.environ['LOCAL_RANK'])
     torch.cuda.set_device(rank)
@@ -128,20 +129,20 @@ if __name__ == '__main__':
     datasets = load_dataset(args.dataset_name).filter(_filter)['train']
     columns_name = datasets.features
     
-    # 加载采样器和DataLoader
+    # initial DistributedSampler and DataLoader
     sampler = DistributedSampler(datasets, shuffle=True, seed=0, drop_last=False)
     loader = DataLoader(datasets, batch_size=args.per_device_train_batch_size, sampler=sampler)
     
     """
     
-    因为数据是以load_dataset的形式,
-    但是DistributedSampler只能在DataLoader里面用,
-    所以要先将DataLoader里的数据转换成Dataset这个类的形式,
-    再输入到Trainer中
+    I load the dataset using load_dataset,
+    but DistributedSampler can only set into DataLoader,
+    so when dataload finished split the dataset,
+    I transform the type Dataload -> Dataset to align the type what Trainer need
     
     """
     
-    # 数据转换
+    # converting data
     all_data = get_data_from_dataloader(loader, columns_name)
     convert_ = convert_data(all_data, columns_name)
     hf_dataset = Dataset.from_dict(convert_)
@@ -151,7 +152,7 @@ if __name__ == '__main__':
     model = AutoModelForCausalLM.from_pretrained(args.model_name_or_path).cuda()
     model = DDP(model, device_ids=[local_rank])
     
-    # 解决AttributeError: 'DistributedDataParallel' object has no attribute 'gradient_checkpointing_enable'的问题
+    #  solve the problem about "AttributeError: 'DistributedDataParallel' object has no attribute 'gradient_checkpointing_enable'"
     model = model.module
     
     ################
