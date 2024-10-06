@@ -1,19 +1,19 @@
 # Distributed-Data-Parallel
 
-# DDP流程
-1. 初始化进程组
+# DDP WORKFLOW
+1. initial process group
 2. torch.cuda.set_device
-3. 初始化采样器
-4. 初始化ddp模型
+3. initial Distributedsamlper
+4. initial DDP Model
 
 
-# 模型&数据集
-1. 模型选用gpt-2(124M)
-2. 选用huggingface上的multilingual-sentiments数据集，筛选出中文数据，训练集共12w条
+# MODEL & DATASET
+1. Model: gpt-2(124M)
+2. Dataset: multilingual-sentiments from Huggingface, which use language "chinese"
 
 
-# 注意事项
-1. model = DDP(model, device_ids=[local_rank])  # 里面的local_rank要整数类型
-2. training_args.gradient_checkpointing_kwargs={'use_reentrant':False}  #如果gradient_checkpointing为True，则必须新增gradient_checkpointing_kwargs到args里
-3. SFTTrainer或者Trainer输入的数据格式都不一样，要注意数据转换
-4. model = model.module  # ddp完模型后要加这行命令，不然保存不了checkpoint
+# CAVEAT
+1. model = DDP(model, device_ids=[local_rank])   # local_rank must be integer 
+2. training_args.gradient_checkpointing_kwargs={'use_reentrant':False}   # if gradient_checkpointing is True，then you have to add "gradient_checkpointing_kwargs" to training_args
+3. DistributedSampler can only set in DataLoader, so you may transform your input data_set to SFTTrainer or Trainer
+4. model = model.module  # when you initialed your ddp model, remenber add this command below, or it will raise type of "gradient_checkpointing_enable" problem
